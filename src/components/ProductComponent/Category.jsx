@@ -1,6 +1,8 @@
 import React from "react";
+import CategorySidebarSkeleton from "../Skeleton/CategorySkeleton";
 
-const CategorySidebar = ({ AllCategory }) => {
+const CategorySidebar = ({ AllCategory, isLoading }) => {
+  if (isLoading) return <CategorySidebarSkeleton />;
   return (
     <aside className="w-64 bg-white p-4 border-r border-r-gray-200">
       {/* Filter Title */}
