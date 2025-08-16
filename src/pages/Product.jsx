@@ -5,6 +5,7 @@ import {
   useGetAllProductQuery,
   useGetProductByCategoryQuery,
   useGetProductsByCategoryQuery,
+  useGetSearchProductQuery,
 } from "../Feature/ProductApi";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 import { FaBars, FaTh } from "react-icons/fa";
@@ -12,17 +13,34 @@ import { useParams } from "react-router";
 
 const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [viewType, setViewType] = useState("grid");
-  const { data, error, isLoading } = selectedCategory
-    ? useGetProductsByCategoryQuery(selectedCategory)
-    : useGetAllProductQuery();
-  const { data: searchProduct, isLoading: isLoadingSearchProduct } =
-    useState("laptops");
-  const {
-    data: allCategory,
-    error: errorCategory,
-    isLoading: isCategoryLoading,
-  } = useGetProductByCategoryQuery();
+
+  const searchQuery = useGetSearchProductQuery(searchTerm, {
+    skip: !searchTerm,
+  });
+  const categoryQuery = useGetProductsByCategoryQuery(selectedCategory, {
+    skip: !selectedCategory || searchTerm,
+  });
+  const allQuery = useGetAllProductQuery(undefined, {
+    skip: searchTerm || selectedCategory,
+  });
+
+  let data, isLoading;
+
+  if (searchTerm) {
+    data = searchQuery.data;
+    isLoading = searchQuery.isLoading;
+  } else if (selectedCategory) {
+    data = categoryQuery.data;
+    isLoading = categoryQuery.isLoading;
+  } else {
+    data = allQuery.data;
+    isLoading = allQuery.isLoading;
+  }
+
+  const { data: allCategory, isLoading: isCategoryLoading } =
+    useGetProductByCategoryQuery();
 
   // pagination state
   const [page, setPage] = useState(1);
@@ -84,11 +102,16 @@ const Product = () => {
                 <span className="text-green-600">({data?.limit})</span>
               </h1>
 
-              {/* Center: Search */}
+              {/*Search */}
               <div className="flex-1 mx-6 relative">
                 <input
                   type="text"
                   placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setPage(1);
+                  }}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-200"
                 />
                 {/* Search Icon */}
@@ -128,6 +151,32 @@ const Product = () => {
                   </select>
                 </div>
 
+                {/* Sort by */}
+                {/* Sort by */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-700 font-inter">
+                    Sort by
+                  </span>
+                  <select
+                    // value={sortBy}
+                    // onChange={(e) => setSortBy(e.target.value)}
+                    className="border font-inter border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+                  >
+                    <option value="title">Name</option>
+                    <option value="price">Price</option>
+                    <option value="rating">Rating</option>
+                  </select>
+
+                  <select
+                    // value={order}
+                    // onChange={(e) => setOrder(e.target.value)}
+                    className="border font-inter border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+                  >
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                  </select>
+                </div>
+
                 {/* View toggle */}
                 <div className="flex items-center gap-2 text-gray-500">
                   <button
@@ -153,30 +202,38 @@ const Product = () => {
               viewType == "grid" ? "grid grid-cols-3 gap-6" : "grid gap-y-6"
             }`}
           >
-            {isLoading
-              ? [...new Array(6)].map((_) => <ProductSkeleton />)
-              : data?.products
-                  ?.slice((page - 1) * perPageShow, page * perPageShow)
-                  .map((product) => (
-                    <ProductCard
-                      key={product?.id}
-                      itemData={product}
-                      viewType={viewType}
-                    />
-                  ))}
+            {isLoading ? (
+              [...new Array(6)].map((_) => <ProductSkeleton />)
+            ) : data?.products?.length > 0 ? (
+              data?.products
+                ?.slice((page - 1) * perPageShow, page * perPageShow)
+                .map((product) => (
+                  <ProductCard
+                    key={product?.id}
+                    itemData={product}
+                    viewType={viewType}
+                  />
+                ))
+            ) : (
+              <div className="col-span-3 text-center py-10">
+                <p className="text-lg font-semibold text-gray-600">
+                  🔍 Search item not found
+                </p>
+              </div>
+            )}
           </div>
           {/* pagination */}
           <div aria-label="Page navigation example" className="mt-10">
-            <ul class="flex items-center -space-x-px h-10 text-base">
+            <ul className="flex items-center -space-x-px h-10 text-base">
               <li>
                 <span
                   onClick={() => handlePerItem(page - 1)}
                   href="#"
-                  class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-red-100 hover:text-gray-700 "
+                  className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-red-100 hover:text-gray-700 "
                 >
-                  <span class="sr-only">Previous</span>
+                  <span className="sr-only">Previous</span>
                   <svg
-                    class="w-3 h-3 rtl:rotate-180"
+                    className="w-3 h-3 rtl:rotate-180"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -193,11 +250,11 @@ const Product = () => {
                 </span>
               </li>
               {[...new Array(totalPage)].map((_, index) => (
-                <li>
+                <li key={index}>
                   <span
                     onClick={() => handlePerItem(index + 1)}
                     href="#"
-                    class={
+                    className={
                       page == index + 1
                         ? "flex items-center justify-center px-4 h-10 leading-tight text-white bg-red-400 border border-transparent"
                         : "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-red-100 hover:text-gray-700"
@@ -211,11 +268,11 @@ const Product = () => {
                 <span
                   onClick={() => handlePerItem(page + 1)}
                   href="#"
-                  class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-red-100 hover:text-gray-700"
+                  className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-red-100 hover:text-gray-700"
                 >
-                  <span class="sr-only">Next</span>
+                  <span className="sr-only">Next</span>
                   <svg
-                    class="w-3 h-3 rtl:rotate-180"
+                    className="w-3 h-3 rtl:rotate-180"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
