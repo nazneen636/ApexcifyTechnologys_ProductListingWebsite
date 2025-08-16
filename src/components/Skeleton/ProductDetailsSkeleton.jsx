@@ -12,7 +12,7 @@ const ProductDetailsSkeleton = () => {
           </div>
 
           {/* Main image */}
-          <div className="flex-1 bg-gray-200 rounded-md h-[500px]"></div>
+          <div className="flex-1 bg-gray-200 rounded-md h-[600px]"></div>
         </div>
 
         {/* Right side: product info */}

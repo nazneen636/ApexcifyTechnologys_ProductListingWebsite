@@ -17,7 +17,13 @@ const ImageGallery = ({ images }) => {
   return (
     <div className="h-full">
       <div className="grid grid-cols-4 h-full">
-        <div className="grid h-[600px] grid-rows-4 gap-y-4">
+        <div
+          className={`${
+            images.length > 4
+              ? "grid h-[600px] grid-cols-1 gap-y-4"
+              : "grid h-[600px] grid-rows-4 gap-y-4"
+          }`}
+        >
           {images.map((item, index) => (
             <div
               key={index}
@@ -28,7 +34,11 @@ const ImageGallery = ({ images }) => {
                 key={index}
                 src={item}
                 alt={item}
-                className="w-full h-full"
+                className={`${
+                  images?.length > 4
+                    ? "w-full h-full object-cover"
+                    : "w-full h-full object-contain"
+                }`}
               />
             </div>
           ))}

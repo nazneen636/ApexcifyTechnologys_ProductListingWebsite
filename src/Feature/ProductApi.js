@@ -6,7 +6,13 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com" }),
   endpoints: (build) => ({
     GetAllProduct: build.query({
-      query: () => `/products`,
+      query: ({ sortBy = "title", order = "asc" } = {}) => {
+        let query = `/products`;
+        if (sortBy && order) {
+          query += `?sortBy=${sortBy}&order=${order}`;
+        }
+        return query;
+      },
     }),
     GetProductByCategory: build.query({
       query: () => `/products/category-list`,

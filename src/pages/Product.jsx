@@ -12,6 +12,8 @@ import { FaBars, FaTh } from "react-icons/fa";
 import { useParams } from "react-router";
 
 const Product = () => {
+  const [sortBy, setSortBy] = useState("title");
+  const [order, setOrder] = useState("asc");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewType, setViewType] = useState("grid");
@@ -22,9 +24,12 @@ const Product = () => {
   const categoryQuery = useGetProductsByCategoryQuery(selectedCategory, {
     skip: !selectedCategory || searchTerm,
   });
-  const allQuery = useGetAllProductQuery(undefined, {
-    skip: searchTerm || selectedCategory,
-  });
+  const allQuery = useGetAllProductQuery(
+    { sortBy, order },
+    {
+      skip: searchTerm || selectedCategory,
+    }
+  );
 
   let data, isLoading;
 
@@ -158,8 +163,8 @@ const Product = () => {
                     Sort by
                   </span>
                   <select
-                    // value={sortBy}
-                    // onChange={(e) => setSortBy(e.target.value)}
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
                     className="border font-inter border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
                   >
                     <option value="title">Name</option>
@@ -168,8 +173,8 @@ const Product = () => {
                   </select>
 
                   <select
-                    // value={order}
-                    // onChange={(e) => setOrder(e.target.value)}
+                    value={order}
+                    onChange={(e) => setOrder(e.target.value)}
                     className="border font-inter border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
                   >
                     <option value="asc">Ascending</option>
@@ -199,7 +204,9 @@ const Product = () => {
           {/* product */}
           <div
             className={`${
-              viewType == "grid" ? "grid grid-cols-3 gap-6" : "grid gap-y-6"
+              viewType == "grid"
+                ? "grid grid-cols-3 gap-6"
+                : "grid grid-cols-1 gap-y-6"
             }`}
           >
             {isLoading ? (
