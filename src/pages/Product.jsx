@@ -4,13 +4,20 @@ import CategorySidebar from "../components/ProductComponent/Category";
 import {
   useGetAllProductQuery,
   useGetProductByCategoryQuery,
+  useGetProductsByCategoryQuery,
 } from "../Feature/ProductApi";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 import { FaBars, FaTh } from "react-icons/fa";
+import { useParams } from "react-router";
 
 const Product = () => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [viewType, setViewType] = useState("grid");
-  const { data, error, isLoading } = useGetAllProductQuery();
+  const { data, error, isLoading } = selectedCategory
+    ? useGetProductsByCategoryQuery(selectedCategory)
+    : useGetAllProductQuery();
+  const { data: searchProduct, isLoading: isLoadingSearchProduct } =
+    useState("laptops");
   const {
     data: allCategory,
     error: errorCategory,
@@ -21,7 +28,6 @@ const Product = () => {
   const [page, setPage] = useState(1);
   const [perPageShow, setPerPageShow] = useState(9);
   const totalPage = Math.ceil((data?.products?.length || 0) / perPageShow);
-  console.log(totalPage);
 
   const handlePageshowChange = (e) => {
     setPerPageShow(Number(e.target.value));
@@ -29,10 +35,12 @@ const Product = () => {
   };
 
   const handlePerItem = (index) => {
-    if (index > 0 && index <= totalPage) {
+    if (index >= 1 && index <= totalPage) {
       setPage(index);
     }
   };
+  console.log(selectedCategory);
+
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-4">
@@ -40,6 +48,7 @@ const Product = () => {
           <CategorySidebar
             AllCategory={allCategory}
             isLoading={isCategoryLoading}
+            onCategorySelect={(cat) => setSelectedCategory(cat)}
           />
         </div>
         {/* right side */}
@@ -68,14 +77,40 @@ const Product = () => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between gap-10 mb-6">
+              {/* Left: Title */}
               <h1 className="text-lg font-bold font-poppins">
                 Product List{" "}
                 <span className="text-green-600">({data?.limit})</span>
               </h1>
 
+              {/* Center: Search */}
+              <div className="flex-1 mx-6 relative">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-200"
+                />
+                {/* Search Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
+                  />
+                </svg>
+              </div>
+
+              {/* Right: Show by + View toggle */}
               <div className="flex items-center gap-8">
-                {/* Sort by */}
+                {/* Show by */}
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-700 font-inter">
                     Show by
@@ -92,17 +127,6 @@ const Product = () => {
                     <option value={30}>30</option>
                   </select>
                 </div>
-                {/* <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-700 font-inter">
-                    Sort by
-                  </span>
-                  <select className="border font-inter border-gray-300 rounded px-2 py-1 text-sm focus:outline-none">
-                    <option>Low to High</option>
-                    <option>High to Low</option>
-                    <option>Newest</option>
-                    <option>Best Rating</option>
-                  </select>
-                </div> */}
 
                 {/* View toggle */}
                 <div className="flex items-center gap-2 text-gray-500">
@@ -171,10 +195,10 @@ const Product = () => {
               {[...new Array(totalPage)].map((_, index) => (
                 <li>
                   <span
-                    onClick={() => handlePerItem(index)}
+                    onClick={() => handlePerItem(index + 1)}
                     href="#"
                     class={
-                      page == index
+                      page == index + 1
                         ? "flex items-center justify-center px-4 h-10 leading-tight text-white bg-red-400 border border-transparent"
                         : "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-red-100 hover:text-gray-700"
                     }
