@@ -213,7 +213,7 @@ const Product = () => {
                 {/* Right: Show by + View toggle */}
                 <div className="flex items-center gap-5">
                   <div
-                    onClick={() => setShowWishList(!showWishList)}
+                    onClick={() => setShowWishList(true)}
                     className="text-2xl cursor-pointer"
                   >
                     {" "}
