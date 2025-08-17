@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../components/commonComponents/ProductCard";
 import CategorySidebar from "../components/ProductComponent/Category";
 import {
@@ -37,19 +37,22 @@ const Product = () => {
   console.log(allQuery?.data?.products);
   let data = allQuery.data;
   let isLoading = allQuery.isLoading;
+  let error = allQuery.error;
 
   if (searchTerm) {
     data = searchQuery.data;
     isLoading = searchQuery.isLoading;
+    error = searchQuery.error;
   } else if (selectedCategory) {
     data = categoryQuery.data;
     isLoading = categoryQuery.isLoading;
+    error = categoryQuery.error;
   } else if (showWishList) {
     data = { products: wishlist };
     isLoading = false;
   } else {
-    data = allQuery.data;
-    isLoading = allQuery.isLoading;
+    data, isLoading;
+    error;
   }
 
   const { data: allCategory, isLoading: isCategoryLoading } =
@@ -70,6 +73,12 @@ const Product = () => {
       setPage(index);
     }
   };
+
+  useEffect(() => {
+    if (page > totalPage) {
+      setPage(1);
+    }
+  }, [data, totalPage, showWishList, selectedCategory, searchTerm]);
 
   return (
     <div className="container mx-auto">
@@ -194,7 +203,7 @@ const Product = () => {
                 <h1
                   onClick={() => {
                     setSelectedCategory(null);
-                    setShowWishList(null);
+                    setShowWishList(false);
                   }}
                   className="text-lg font-bold font-poppins text-green-600 cursor-pointer hover:text-green-400"
                 >
@@ -255,6 +264,8 @@ const Product = () => {
                     viewType={viewType}
                   />
                 ))
+            ) : error ? (
+              <div>Something went wrong</div>
             ) : (
               <div className="col-span-3 text-center py-10">
                 <p className="text-lg font-semibold text-gray-600">
