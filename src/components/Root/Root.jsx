@@ -4,7 +4,6 @@ import { Outlet } from "react-router";
 const Root = () => {
   return (
     <div>
-      <p>Navbar</p>
       <Outlet />
     </div>
   );

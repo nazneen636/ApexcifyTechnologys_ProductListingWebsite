@@ -2,6 +2,8 @@ import React from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { TbTruckDelivery } from "react-icons/tb";
 import Star from "../commonComponents/Star";
+import { FiRefreshCcw } from "react-icons/fi";
+import { HiOutlineRefresh } from "react-icons/hi";
 const SpecificProductDetails = ({ product }) => {
   const {
     title,
@@ -49,36 +51,34 @@ const SpecificProductDetails = ({ product }) => {
         </h4>
       </div>
 
-      {/* card size component */}
-      <div className="flex items-center gap-x-3 ">
-        <h2 className="text-xl font-normal font-inter text-black">Colors:</h2>
-        <div className="border-2 border-black rounded-full  w-[24px] h-[24px] flex items-center justify-center ">
-          <span className="inline-block w-4 h-4 rounded-full bg-[#A0BCE0] "></span>
-        </div>
-        <div className="border-2 border-black rounded-full  w-[24px] h-[24px] flex items-center justify-center ">
-          <span className="inline-block w-4 h-4 rounded-full bg-red-500 "></span>
-        </div>
-      </div>
+      <div className="flex justify-between items-center">
+        {/* qr code */}
+        <div className="">
+          <div className="flex items-center gap-3 ">
+            <h2 className="text-lg  font-normal font-inter text-black">
+              Brand:
+            </h2>
 
-      {/* size */}
-      <div className="flex items-center gap-x-3 ">
-        <h2 className="text-xl  font-normal font-inter text-black">Size:</h2>
+            <span className="text-base font-normal font-poppins ">
+              {product?.brand || "N/A"}
+            </span>
+          </div>
+          <div className="flex  gap-3 mt-1">
+            <h2 className="text-lg  font-normal font-inter text-black">
+              Tags:
+            </h2>
 
-        <div className="flex items-center gap-x-3 ">
-          {sizes.map((size) => (
-            <div className="border-1 border-gray-300 rounded w-[36px] h-[36px] flex items-center justify-center ">
-              <span
-                className="inline-block text-[14px] font-bold font-poppins opacity-95"
-                key={size.id}
-              >
-                {size?.size}
-              </span>
-            </div>
-          ))}
+            <span className="text-base font-normal font-poppins capitalize ">
+              {product?.tags?.join(", ")}
+            </span>
+          </div>
+        </div>
+        <div className="w-20 h-20 ">
+          <img src={product?.meta?.qrCode} alt={product.qrCode} />
         </div>
       </div>
       {/* button */}
-      <div className=" flex items-center  gap-x-4">
+      <div className=" flex items-center  justify-between">
         <div className="flex items-center">
           <span className="px-4 py-2 border-2 border-gray-300 rounded-l-lg text-[20px] font-poppins text-black cursor-pointer hover:bg-red-400 hover:text-white">
             -
@@ -104,13 +104,13 @@ const SpecificProductDetails = ({ product }) => {
       {/* button */}
       {/* condition  */}
       <div className="">
-        <div className="flex items-center gap-x-3 border border-gray-300 px-14 py-4 w-full">
-          <span className="text-4xl">
+        <div className="flex items-center gap-x-5 border border-gray-300 px-14 py-4 w-full">
+          <span className="text-3xl">
             <TbTruckDelivery />
           </span>
           <div>
             <h4 className="text-base  font-medium font-poppins text-black">
-              Free Delivery
+              Shipping info
             </h4>
             <p className="text-base  font-medium font-poppins text-black">
               {shippingInformation}
@@ -118,13 +118,13 @@ const SpecificProductDetails = ({ product }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-x-3 border border-gray-300 border-t-0 px-14 py-4 w-full">
-          <span className="text-4xl ">
-            <TbTruckDelivery />
+        <div className="flex items-center gap-x-5 border border-gray-300 border-t-0 px-14 py-4 w-full">
+          <span className="text-3xl ">
+            <HiOutlineRefresh />
           </span>
           <div>
             <h4 className="text-base font-medium font-poppins text-black">
-              Return Delivery
+              Return Policy
             </h4>
             <p className="text-sm  font-medium font-poppins text-bl">
               {returnPolicy}

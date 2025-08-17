@@ -13,7 +13,8 @@ const ProductDetails = () => {
   // console.log(data?.category);
 
   return (
-    <div className="container mx-auto mb-20!">
+    <div className="container mt-5 mx-auto mb-20!">
+      <h2 className="text-2xl font-bold mb-5">Product Details</h2>
       {!isLoading ? (
         <div className="grid grid-cols-3">
           <div className="col-span-2 mr-16!">

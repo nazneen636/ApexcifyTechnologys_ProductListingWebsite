@@ -1,10 +1,17 @@
 import React from "react";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Star from "./Star";
 import { Link } from "react-router";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleWishList } from "../../Feature/slices/wishlistSlice";
 
 const ProductCardList = ({ itemData, viewType = "grid" }) => {
+  const dispatch = useDispatch();
+  const wishList = useSelector((state) => state.wishList);
+  const isWishListed = wishList.some((item) => item.id === itemData.id);
+  console.log(wishList);
+
   if (!itemData) return null;
 
   // Common price calculation
@@ -17,7 +24,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
       : null;
 
   return (
-    <Link to={`/productdetails/${itemData.id}`} className="w-full">
+    <div className="w-full">
       {/* GRID VIEW */}
       {viewType === "grid" && (
         <div className="w-full">
@@ -29,12 +36,16 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                 </span>
               )}
               <div className="flex flex-col">
-                <div className="w-[35px] h-[35px] flex justify-center items-center rounded-full bg-white cursor-pointer hover:bg-red-400 hover:text-white text-xl">
-                  <FaRegHeart />
-                </div>
-                <div className="w-[35px] h-[35px] flex justify-center items-center rounded-full bg-white cursor-pointer hover:bg-red-400 hover:text-white text-xl mt-2">
-                  <MdOutlineRemoveRedEye />
-                </div>
+                <button
+                  onClick={() => dispatch(toggleWishList(itemData))}
+                  className="w-10 h-10 flex justify-center items-center rounded-full hover:bg-red-100 cursor-pointer border border-red-400 text-red-600"
+                >
+                  {isWishListed ? (
+                    <FaHeart className="text-red-500" />
+                  ) : (
+                    <FaRegHeart />
+                  )}
+                </button>
               </div>
             </div>
 
@@ -90,9 +101,18 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
           {/* Details */}
           <div className="flex flex-col justify-between flex-1">
             <div>
-              <h2 className="text-lg font-poppins font-medium mb-2">
-                {itemData?.title}
-              </h2>
+              <div className="flex items-center gap-5 mb-5">
+                <h2 className="text-lg font-poppins font-medium ">
+                  {itemData?.title}
+                </h2>
+                <div className="">
+                  {itemData.discountPercentage && (
+                    <span className="px-3 py-2 rounded bg-red-400 h-fit font-poppins text-sm text-white font-normal">
+                      -{itemData?.discountPercentage}%
+                    </span>
+                  )}
+                </div>
+              </div>
               <div className="flex items-center gap-x-3 mb-2">
                 <span className="text-red-400 font-medium text-lg font-poppins">
                   ${discountedPrice}
@@ -100,6 +120,16 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                 <span className="text-black opacity-50 font-medium text-lg font-poppins line-through">
                   ${(itemData?.price).toFixed(2)}
                 </span>
+                <button
+                  onClick={() => dispatch(toggleWishList(itemData))}
+                  className="w-[35px] h-[35px] flex justify-center items-center rounded-full hover:bg-red-100 cursor-pointer border border-red-400 text-red-600 ml-4"
+                >
+                  {isWishListed ? (
+                    <FaHeart className="text-red-500" />
+                  ) : (
+                    <FaRegHeart />
+                  )}
+                </button>
               </div>
               <div className="flex items-center gap-x-1">
                 <Star rating={itemData?.rating} />
@@ -117,18 +147,20 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
               <button className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">
                 Add to Cart
               </button>
-              <button className="w-10 h-10 flex justify-center items-center rounded-full bg-white border hover:bg-red-400 hover:text-white">
-                <FaRegHeart />
-              </button>
-              <button className="w-10 h-10 flex justify-center items-center rounded-full bg-white border hover:bg-red-400 hover:text-white">
-                <MdOutlineRemoveRedEye />
-              </button>
+              <Link
+                to={`/productdetails/${itemData?.id}`}
+                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+              >
+                View Details
+              </Link>
             </div>
           </div>
         </div>
       )}
-    </Link>
+    </div>
   );
 };
 
 export default ProductCardList;
+
+// Link to={`/productdetails/${itemData.id}`}
