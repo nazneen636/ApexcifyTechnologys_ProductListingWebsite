@@ -11,8 +11,13 @@ import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 import { FaBars, FaHeart, FaTh } from "react-icons/fa";
 import { useParams } from "react-router";
 import { BsCart3 } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 
 const Product = () => {
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishList);
+  console.log(wishlist);
+
   const [sortBy, setSortBy] = useState("title");
   const [order, setOrder] = useState("asc");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -61,7 +66,6 @@ const Product = () => {
       setPage(index);
     }
   };
-  console.log(selectedCategory);
 
   return (
     <div className="container mx-auto">

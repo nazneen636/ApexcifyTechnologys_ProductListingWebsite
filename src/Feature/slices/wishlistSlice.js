@@ -1,12 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  value: 0,
-};
+const initialState = [];
 
 export const wishListSlice = createSlice({
   name: "wishList",
-  initialState: [],
+  initialState,
   reducers: {
     toggleWishList: (state, action) => {
       const product = action.payload;
