@@ -10,7 +10,6 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
   const dispatch = useDispatch();
   const wishList = useSelector((state) => state.wishList);
   const isWishListed = wishList.some((item) => item.id === itemData.id);
-  console.log(wishList);
 
   if (!itemData) return null;
 

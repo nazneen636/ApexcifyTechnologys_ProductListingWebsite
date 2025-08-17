@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 const Product = () => {
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishList);
-  console.log(wishlist);
 
+  const [showWishList, setShowWishList] = useState(false);
   const [sortBy, setSortBy] = useState("title");
   const [order, setOrder] = useState("asc");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -34,8 +34,9 @@ const Product = () => {
       skip: searchTerm || selectedCategory,
     }
   );
-
-  let data, isLoading;
+  console.log(allQuery?.data?.products);
+  let data = allQuery.data;
+  let isLoading = allQuery.isLoading;
 
   if (searchTerm) {
     data = searchQuery.data;
@@ -43,6 +44,9 @@ const Product = () => {
   } else if (selectedCategory) {
     data = categoryQuery.data;
     isLoading = categoryQuery.isLoading;
+  } else if (showWishList) {
+    data = { products: wishlist };
+    isLoading = false;
   } else {
     data = allQuery.data;
     isLoading = allQuery.isLoading;
@@ -187,13 +191,22 @@ const Product = () => {
               </div>
               <div className="flex items-center justify-between mt-1">
                 {/* Left: Title */}
-                <h1 className="text-lg font-bold font-poppins text-green-600">
+                <h1
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setShowWishList(null);
+                  }}
+                  className="text-lg font-bold font-poppins text-green-600 cursor-pointer hover:text-green-400"
+                >
                   All Product
                 </h1>
 
                 {/* Right: Show by + View toggle */}
                 <div className="flex items-center gap-5">
-                  <div className="text-2xl cursor-pointer ">
+                  <div
+                    onClick={() => setShowWishList(!showWishList)}
+                    className="text-2xl cursor-pointer"
+                  >
                     {" "}
                     <FaHeart className="text-red-500" />
                   </div>

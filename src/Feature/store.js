@@ -1,21 +1,37 @@
-import { configureStore } from "@reduxjs/toolkit";
-// Or from '@reduxjs/toolkit/query/react'
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { productApi } from "./ProductApi";
 import wishListReducer from "./slices/wishlistSlice";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
-export const store = configureStore({
-  reducer: {
-    // Add the generated reducer as a specific top-level slice
-    [productApi.reducerPath]: productApi.reducer,
-    wishList: wishListReducer,
-  },
-  // Adding the api middleware enables caching, invalidation, polling,
-  // and other useful features of `rtk-query`.
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productApi.middleware),
+// 1️⃣ Configure persist
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["wishList"], // persist only wishlist slice
+};
+
+// 2️⃣ Combine reducers
+const rootReducer = combineReducers({
+  [productApi.reducerPath]: productApi.reducer,
+  wishList: wishListReducer,
 });
 
-// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
-// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
+// 3️⃣ Wrap rootReducer with persistReducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// 4️⃣ Configure store
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // needed for redux-persist
+    }).concat(productApi.middleware),
+});
+
+// 5️⃣ Persistor
+export const persistor = persistStore(store);
+
+// 6️⃣ Setup RTK Query listeners
 setupListeners(store.dispatch);
