@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaEye, FaHeart, FaRegHeart } from "react-icons/fa";
 import Star from "./Star";
 import { Link } from "react-router";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
@@ -34,10 +34,10 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                   -{itemData?.discountPercentage}%
                 </span>
               )}
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-2">
                 <button
                   onClick={() => dispatch(toggleWishList(itemData))}
-                  className="w-10 h-10 flex justify-center items-center rounded-full hover:bg-red-100 cursor-pointer border border-red-400 text-red-600"
+                  className="w-10 h-10 flex justify-center items-center rounded-full hover:bg-red-100 cursor-pointer border border-red-400 text-red-600 transition-all"
                 >
                   {isWishListed ? (
                     <FaHeart className="text-red-500" />
@@ -45,6 +45,12 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                     <FaRegHeart />
                   )}
                 </button>
+                <Link
+                  to={`/productdetails/${itemData?.id}`}
+                  className="w-10 h-10 flex justify-center items-center rounded-full hover:bg-green-100 cursor-pointer border border-green-600 text-green-700 transition-all"
+                >
+                  <FaEye />
+                </Link>
               </div>
             </div>
 
@@ -87,9 +93,9 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
 
       {/* LIST VIEW */}
       {viewType === "list" && (
-        <div className="flex gap-6 bg-gray-100 rounded-lg p-4 hover:shadow-md transition">
+        <div className="grid grid-cols-5 gap-6 bg-gray-100 rounded-lg p-4 hover:shadow-md transition">
           {/* Image */}
-          <div className="w-40 h-40 flex-shrink-0 flex items-center justify-center bg-white rounded">
+          <div className="w-full h-full flex-shrink-0 flex items-center justify-center bg-white rounded">
             <img
               src={itemData?.thumbnail}
               alt="product"
@@ -98,7 +104,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
           </div>
 
           {/* Details */}
-          <div className="flex flex-col justify-between flex-1">
+          <div className="col-span-4 flex flex-col justify-between flex-1">
             <div>
               <div className="flex items-center gap-5 mb-5">
                 <h2 className="text-lg font-poppins font-medium ">
@@ -119,7 +125,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                 <span className="text-black opacity-50 font-medium text-lg font-poppins line-through">
                   ${(itemData?.price).toFixed(2)}
                 </span>
-                <button
+                {/* <button
                   onClick={() => dispatch(toggleWishList(itemData))}
                   className="w-[35px] h-[35px] flex justify-center items-center rounded-full hover:bg-red-100 cursor-pointer border border-red-400 text-red-600 ml-4"
                 >
@@ -128,7 +134,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                   ) : (
                     <FaRegHeart />
                   )}
-                </button>
+                </button> */}
               </div>
               <div className="flex items-center gap-x-1">
                 <Star rating={itemData?.rating} />
@@ -143,15 +149,21 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
 
             {/* Actions */}
             <div className="flex items-center gap-3 mt-4">
-              <button className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">
+              <button className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer">
                 Add to Cart
               </button>
               <Link
                 to={`/productdetails/${itemData?.id}`}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer"
               >
                 View Details
               </Link>
+              <button
+                onClick={() => dispatch(toggleWishList(itemData))}
+                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer"
+              >
+                {isWishListed ? "Remove to Wishlist" : "Add to Wishlist"}
+              </button>
             </div>
           </div>
         </div>

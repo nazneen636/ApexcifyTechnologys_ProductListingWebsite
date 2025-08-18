@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import ProductCard from "../components/commonComponents/ProductCard";
 import CategorySidebar from "../components/ProductComponent/Category";
 import {
@@ -9,7 +11,6 @@ import {
 } from "../Feature/ProductApi";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 import { FaBars, FaHeart, FaTh } from "react-icons/fa";
-import { useParams } from "react-router";
 import { BsCart3 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,7 +27,7 @@ const Product = () => {
 
   const searchQuery = useGetSearchProductQuery(searchTerm);
   const categoryQuery = useGetProductsByCategoryQuery(selectedCategory, {
-    skip: !selectedCategory || searchTerm,
+    skip: !selectedCategory || searchTerm || showWishList,
   });
   const allQuery = useGetAllProductQuery(
     { sortBy, order },
@@ -35,11 +36,15 @@ const Product = () => {
     }
   );
   console.log(allQuery?.data?.products);
+
   let data = allQuery.data;
   let isLoading = allQuery.isLoading;
   let error = allQuery.error;
 
-  if (searchTerm) {
+  if (showWishList) {
+    data = { products: wishlist };
+    isLoading = false;
+  } else if (searchTerm) {
     data = searchQuery.data;
     isLoading = searchQuery.isLoading;
     error = searchQuery.error;
@@ -47,9 +52,6 @@ const Product = () => {
     data = categoryQuery.data;
     isLoading = categoryQuery.isLoading;
     error = categoryQuery.error;
-  } else if (showWishList) {
-    data = { products: wishlist };
-    isLoading = false;
   } else {
     data, isLoading;
     error;
@@ -80,6 +82,13 @@ const Product = () => {
     }
   }, [data, totalPage, showWishList, selectedCategory, searchTerm]);
 
+  const handleCategorySelect = (cat) => {
+    setSelectedCategory(cat);
+    setShowWishList(false); // Exit wishlist mode when selecting a category
+    setSearchTerm(""); // Clear search term as well
+    setPage(1); // Reset to first page
+  };
+
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-4">
@@ -87,7 +96,7 @@ const Product = () => {
           <CategorySidebar
             AllCategory={allCategory}
             isLoading={isCategoryLoading}
-            onCategorySelect={(cat) => setSelectedCategory(cat)}
+            onCategorySelect={handleCategorySelect}
           />
         </div>
         {/* right side */}
@@ -132,6 +141,8 @@ const Product = () => {
                     onChange={(e) => {
                       setSearchTerm(e.target.value);
                       setPage(1);
+                      setShowWishList(false);
+                      setSelectedCategory(null);
                     }}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-200"
                   />
@@ -172,7 +183,6 @@ const Product = () => {
                   </div>
 
                   {/* Sort by */}
-                  {/* Sort by */}
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-700 font-inter">
                       Sort by
@@ -204,6 +214,7 @@ const Product = () => {
                   onClick={() => {
                     setSelectedCategory(null);
                     setShowWishList(false);
+                    setSearchTerm("");
                   }}
                   className="text-lg font-bold font-poppins text-green-600 cursor-pointer hover:text-green-400"
                 >
@@ -213,7 +224,11 @@ const Product = () => {
                 {/* Right: Show by + View toggle */}
                 <div className="flex items-center gap-5">
                   <div
-                    onClick={() => setShowWishList(true)}
+                    onClick={() => {
+                      setShowWishList(true);
+                      setSelectedCategory(null);
+                      setSearchTerm("");
+                    }}
                     className="text-2xl cursor-pointer"
                   >
                     {" "}
@@ -253,7 +268,9 @@ const Product = () => {
             }`}
           >
             {isLoading ? (
-              [...new Array(6)].map((_) => <ProductSkeleton />)
+              [...new Array(6)].map((_, index) => (
+                <ProductSkeleton key={index} />
+              ))
             ) : data?.products?.length > 0 ? (
               data?.products
                 ?.slice((page - 1) * perPageShow, page * perPageShow)
@@ -293,9 +310,9 @@ const Product = () => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M5 1 1 5l4 4"
                     />
                   </svg>
@@ -332,9 +349,9 @@ const Product = () => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="m1 9 4-4-4-4"
                     />
                   </svg>
