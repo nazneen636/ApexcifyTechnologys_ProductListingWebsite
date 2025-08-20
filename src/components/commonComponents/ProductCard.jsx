@@ -27,7 +27,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
       {/* GRID VIEW */}
       {viewType === "grid" && (
         <div className="w-full">
-          <div className="bg-gray-100 rounded-2 overflow-hidden pb-[55px] px-4 pt-4 rounded relative group cursor-pointer">
+          <div className="bg-gray-100 rounded-2 overflow-hidden pb-[55px] px-4 pt-4 rounded relative group ">
             <div className="flex justify-between">
               {itemData.discountPercentage && (
                 <span className="px-3 py-2 rounded bg-red-400 h-fit font-poppins text-sm text-white font-normal">
@@ -54,7 +54,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
               </div>
             </div>
 
-            <div className="flex justify-between cursor-pointer">
+            <div className="flex justify-between">
               <div className="w-[172px] h-[152px] flex-1">
                 <img
                   src={itemData?.thumbnail}
@@ -64,7 +64,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
               </div>
             </div>
 
-            <div className="opacity-0 absolute left-0 bottom-0 font-poppins font-medium text-lg cursor-pointer flex justify-center items-center w-full h-12 bg-black text-white group-hover:opacity-100 transition-all">
+            <div className="opacity-0 absolute left-0 bottom-0 font-poppins font-medium text-lg cursor-pointer flex justify-center items-center w-full h-12 bg-black text-white group-hover:opacity-100 transition-all duration-200">
               <h3>Add To Cart</h3>
             </div>
           </div>
