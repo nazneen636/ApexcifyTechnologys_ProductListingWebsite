@@ -1,19 +1,30 @@
 import React from "react";
 import CategorySidebarSkeleton from "../Skeleton/CategorySkeleton";
+import { RiFilterFill } from "react-icons/ri";
+import logo from "../../assets/logo.png";
 
 const CategorySidebar = ({ AllCategory, isLoading, onCategorySelect }) => {
   if (isLoading) return <CategorySidebarSkeleton />;
   return (
-    <aside className="w-64 fixed bg-white px-4 border-r border-r-gray-200">
+    <aside className="w-72 fixed bg-white px-4 border-r border-r-gray-200">
+      <div className="mt-4">
+        <h1 className="font-poppins font-bold text-3xl text-red-400 mb-8">
+          Red Mart
+        </h1>
+      </div>
       {/* Filter Title */}
-      <h2 className="text-lg font-bold mb-4">Filter</h2>
+      <h2 className="text-lg font-bold mb-6 flex gap-2 items-center mt-2">
+        {" "}
+        <RiFilterFill className="text-gray-600" />
+        Filter
+      </h2>
 
       {/* Brand */}
       <div className="">
         <h3 className="text-sm font-semibold mb-5 font-poppins text-black">
           Category
         </h3>
-        <div className="mb-6 h-[80vh] overflow-y-scroll">
+        <div className="mb-6 h-[76vh] overflow-y-scroll">
           {AllCategory?.map((category, index) => (
             <label
               key={index}

@@ -63,7 +63,7 @@ const Product = () => {
 
   // pagination state
   const [page, setPage] = useState(1);
-  const [perPageShow, setPerPageShow] = useState(9);
+  const [perPageShow, setPerPageShow] = useState(8);
   const totalPage = Math.ceil((data?.products?.length || 0) / perPageShow);
 
   const handlePageshowChange = (e) => {
@@ -92,7 +92,7 @@ const Product = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-5 relative">
         <div className="">
           <CategorySidebar
             AllCategory={allCategory}
@@ -101,7 +101,7 @@ const Product = () => {
           />
         </div>
         {/* right side */}
-        <div className="col-span-3 relative">
+        <div className="col-span-4 relative">
           {isLoading ? (
             <div className="flex items-center justify-between mb-6 animate-pulse">
               {/* Title */}
@@ -126,7 +126,7 @@ const Product = () => {
               </div>
             </div>
           ) : (
-            <div className="">
+            <div className="sticky top-0 z-50 border-b border-gray-200">
               <ProductRight
                 totalProduct={data?.products?.length || 0}
                 searchTerm={searchTerm}
@@ -161,7 +161,7 @@ const Product = () => {
           <div
             className={`mt-10 ${
               viewType == "grid"
-                ? "grid grid-cols-3 gap-6"
+                ? "grid grid-cols-4 gap-6"
                 : "grid grid-cols-1 gap-y-6"
             }`}
           >

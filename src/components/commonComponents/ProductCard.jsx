@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleWishList } from "../../Feature/slices/wishlistSlice";
-import { addToCart } from "../../Feature/slices/cartSlice";
+import { addToCart, removeFromCart } from "../../Feature/slices/cartSlice";
 
 const ProductCardList = ({ itemData, viewType = "grid" }) => {
   const dispatch = useDispatch();
@@ -132,16 +132,6 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
                 <span className="text-black opacity-50 font-medium text-lg font-poppins line-through">
                   ${(itemData?.price).toFixed(2)}
                 </span>
-                {/* <button
-                  onClick={() => dispatch(toggleWishList(itemData))}
-                  className="w-[35px] h-[35px] flex justify-center items-center rounded-full hover:bg-red-100 cursor-pointer border border-red-400 text-red-600 ml-4"
-                >
-                  {isWishListed ? (
-                    <FaHeart className="text-red-500" />
-                  ) : (
-                    <FaRegHeart />
-                  )}
-                </button> */}
               </div>
               <div className="flex items-center gap-x-1">
                 <Star rating={itemData?.rating} />
@@ -156,9 +146,21 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
 
             {/* Actions */}
             <div className="flex items-center gap-3 mt-4">
-              <button className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer">
-                Add to Cart
-              </button>
+              {isCart ? (
+                <button
+                  onClick={() => dispatch(removeFromCart(itemData))}
+                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer"
+                >
+                  Remove to cart
+                </button>
+              ) : (
+                <button
+                  onClick={() => dispatch(addToCart(itemData))}
+                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer"
+                >
+                  Add to cart
+                </button>
+              )}
               <Link
                 to={`/productdetails/${itemData?.id}`}
                 className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer"

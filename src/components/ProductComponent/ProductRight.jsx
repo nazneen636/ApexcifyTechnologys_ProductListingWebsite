@@ -21,14 +21,15 @@ const ProductRight = ({
 }) => {
   const cart = useSelector((state) => state.cart);
   const totalCartItems = cart.length;
+
   console.log(totalCartItems);
 
   return (
     <div>
-      <div className="sticky z-50 py-4 bg-white w-full flex flex-col gap-4">
+      <div className=" py-4 bg-white w-full flex flex-col gap-4">
         <div className="flex items-center justify-between gap-12">
           {/* Left: Title */}
-          <h1 className="text-2xl font-bold mb-6">
+          <h1 className="text-2xl font-bold ">
             Product List <span className="text-gray-500">({totalProduct})</span>
           </h1>
           {/*Search */}
@@ -108,19 +109,19 @@ const ProductRight = ({
           </h1>
 
           {/* Right: Show by + View toggle */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-8">
             <div onClick={handleWishList} className="text-2xl cursor-pointer">
               {" "}
               <FaHeart className="text-red-500" />
             </div>
             <Link
-              to="/product/addtocart"
+              to="/addtocart"
               className="relative text-2xl cursor-pointer  hover:text-gray-700 transition-all"
             >
               {" "}
               <HiMiniShoppingCart />
               {totalCartItems > 0 && (
-                <span className="absolute top-[40%] -right-2 w-6 h-6 rounded-full flex items-center justify-center bg-red-500 text-white text-sm font-semibold">
+                <span className="absolute top-[45%] -right-3 w-6 h-6 rounded-full flex items-center justify-center bg-red-500 text-white text-sm font-semibold">
                   {totalCartItems}
                 </span>
               )}

@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,6 +7,7 @@ import {
   clearCart,
 } from "../../Feature/slices/cartSlice";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import BreadCrumb from "../commonComponents/BreadCrumb";
 
 const CartPage = () => {
   const cart = useSelector((state) => state.cart);
@@ -21,6 +21,7 @@ const CartPage = () => {
 
   return (
     <div className="container mx-auto py-10">
+      <BreadCrumb />
       <h1 className="text-2xl font-bold mb-6">🛒 Shopping Cart</h1>
 
       {cart.length === 0 ? (
@@ -32,7 +33,7 @@ const CartPage = () => {
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="grid grid-cols-6 items-center p-4 border border-gray-200 shadow rounded-lg mb-4"
+                className="grid grid-cols-7 gap-4 items-center p-4 border border-gray-200 shadow rounded-lg mb-4"
               >
                 {/* img */}
                 <div className="w-20 h-20  bg-gray-200 rounded overflow-hidden">
@@ -43,11 +44,11 @@ const CartPage = () => {
                   />
                 </div>
                 {/* title and price */}
-                <div className="-ml-10">
+                <div className="-ml-10 col-span-3">
                   <h2 className="font-semibold text-xl">{item.title}</h2>
                   <p className="text-gray-600 text-base">${item.price}</p>
                 </div>
-                <div className="flex items-center gap-3 mt-2  col-span-2">
+                <div className="flex items-center gap-3 mt-2  ">
                   <button
                     onClick={() => dispatch(decreaseQty(item.id))}
                     className="w-8 h-8 cursor-pointer flex items-center justify-center  border rounded hover:bg-gray-100 text-sm text-gray-800"
@@ -69,7 +70,7 @@ const CartPage = () => {
                 </div>
                 <button
                   onClick={() => dispatch(removeFromCart(item.id))}
-                  className="text-red-500 hover:text-red-700 cursor-pointer text-xl"
+                  className=" text-red-500 hover:text-red-700 cursor-pointer text-xl"
                 >
                   <FaTrash />
                 </button>
@@ -78,7 +79,7 @@ const CartPage = () => {
           </div>
 
           {/* Right: Summary */}
-          <div className="p-6 border rounded-lg shadow-md">
+          <div className="p-6 border rounded-lg shadow-md h-fit">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
