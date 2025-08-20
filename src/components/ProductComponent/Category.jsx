@@ -18,7 +18,7 @@ const CategorySidebar = ({ AllCategory, isLoading, onCategorySelect }) => {
             <label
               key={index}
               onClick={() => onCategorySelect(category)}
-              className="flex items-center gap-4 mb-1.5"
+              className="flex items-center gap-4 mb-2"
             >
               <input type="radio" name="category" className="w-4 h-4" />
               <span className="capitalize font-inter text-gray-700">

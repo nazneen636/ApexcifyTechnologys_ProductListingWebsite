@@ -25,18 +25,21 @@ const ProductDetails = () => {
       <BreadCrumb />
       <h2 className="text-2xl text-red-950 font-bold mb-5">Product Details</h2>
       {!isLoading ? (
-        <div className="grid grid-cols-3">
-          <div className="col-span-2 mr-16!">
-            <ImageGallery images={data?.images} />
+        <div>
+          {" "}
+          <div className="grid grid-cols-3">
+            <div className="col-span-2 mr-16!">
+              <ImageGallery images={data?.images} />
+            </div>
+            <div className="">
+              <SpecificProductDetails product={data} />
+            </div>
           </div>
-          <div className="">
-            <SpecificProductDetails product={data} />
-          </div>
+          <RelatedProducts data={relatedProduct?.products} />
         </div>
       ) : (
         <ProductDetailsSkeleton />
       )}
-      <RelatedProducts data={relatedProduct?.products} />
     </div>
   );
 };

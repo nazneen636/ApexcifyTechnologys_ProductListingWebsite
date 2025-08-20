@@ -1,3 +1,5 @@
+import ProductSkeleton from "./ProductSkeleton";
+
 const ProductDetailsSkeleton = () => {
   return (
     <div className="container mx-auto animate-pulse h-full">
@@ -64,6 +66,12 @@ const ProductDetailsSkeleton = () => {
             <div className="h-10 bg-gray-200 rounded"></div>
           </div>
         </div>
+      </div>
+      <div className="my-5 py-3 rounded bg-gray-200 w-[120px]"></div>
+      <div className="grid grid-cols-4 gap-4 mt-10">
+        {[...new Array(4)].map((_, index) => (
+          <ProductSkeleton />
+        ))}
       </div>
     </div>
   );
