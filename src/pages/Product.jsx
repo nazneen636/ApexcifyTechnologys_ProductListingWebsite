@@ -10,6 +10,8 @@ import {
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 import { useSelector } from "react-redux";
 import ProductRight from "../components/ProductComponent/ProductRight";
+import Error from "../components/commonComponents/Error";
+import SearchItemNotFound from "../components/commonComponents/SearchItemNotFound";
 
 const Product = () => {
   const wishlist = useSelector((state) => state.wishList);
@@ -95,7 +97,7 @@ const Product = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-5 relative">
+      <div className="grid grid-cols-5 gap-16 relative">
         {/* category part in left */}
         <div className="">
           <CategorySidebar
@@ -165,7 +167,7 @@ const Product = () => {
           <div
             className={`mt-10 ${
               viewType == "grid"
-                ? "grid grid-cols-4 gap-6"
+                ? "grid grid-cols-3 gap-6"
                 : "grid grid-cols-1 gap-y-6"
             }`}
           >
@@ -184,83 +186,85 @@ const Product = () => {
                   />
                 ))
             ) : error ? (
-              <div>Something went wrong</div>
+              <div className="col-span-3">
+                <Error />
+              </div>
             ) : (
-              <div className="col-span-3 text-center py-10">
-                <p className="text-lg font-semibold text-gray-600">
-                  🔍 Search item not found
-                </p>
+              <div className="col-span-3 text-center">
+                <SearchItemNotFound />
               </div>
             )}
           </div>
           {/* pagination */}
-          <div aria-label="Page navigation example" className="mt-10">
-            <ul className="flex items-center -space-x-px h-10 text-base">
-              <li>
-                <span
-                  onClick={() => handlePerItem(page - 1)}
-                  href="#"
-                  className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-red-100 hover:text-gray-700 "
-                >
-                  <span className="sr-only">Previous</span>
-                  <svg
-                    className="w-3 h-3 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 1 1 5l4 4"
-                    />
-                  </svg>
-                </span>
-              </li>
-              {[...new Array(totalPage)].map((_, index) => (
-                <li key={index}>
+          {data?.products?.length > 0 && !error && !isLoading && (
+            <div aria-label="Page navigation example" className="mt-10">
+              <ul className="flex items-center -space-x-px h-10 text-base">
+                <li>
                   <span
-                    onClick={() => handlePerItem(index + 1)}
+                    onClick={() => handlePerItem(page - 1)}
                     href="#"
-                    className={
-                      page == index + 1
-                        ? "flex items-center justify-center px-4 h-10 leading-tight text-white bg-red-400 border border-transparent"
-                        : "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-red-100 hover:text-gray-700"
-                    }
+                    className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-red-100 hover:text-gray-700 "
                   >
-                    {index + 1}
+                    <span className="sr-only">Previous</span>
+                    <svg
+                      className="w-3 h-3 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 1 1 5l4 4"
+                      />
+                    </svg>
                   </span>
                 </li>
-              ))}
-              <li>
-                <span
-                  onClick={() => handlePerItem(page + 1)}
-                  href="#"
-                  className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-red-100 hover:text-gray-700"
-                >
-                  <span className="sr-only">Next</span>
-                  <svg
-                    className="w-3 h-3 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
+                {[...new Array(totalPage)].map((_, index) => (
+                  <li key={index}>
+                    <span
+                      onClick={() => handlePerItem(index + 1)}
+                      href="#"
+                      className={
+                        page == index + 1
+                          ? "flex items-center justify-center px-4 h-10 leading-tight text-white bg-red-400 border border-transparent"
+                          : "flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-red-100 hover:text-gray-700"
+                      }
+                    >
+                      {index + 1}
+                    </span>
+                  </li>
+                ))}
+                <li>
+                  <span
+                    onClick={() => handlePerItem(page + 1)}
+                    href="#"
+                    className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-red-100 hover:text-gray-700"
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 9 4-4-4-4"
-                    />
-                  </svg>
-                </span>
-              </li>
-            </ul>
-          </div>
+                    <span className="sr-only">Next</span>
+                    <svg
+                      className="w-3 h-3 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 9 4-4-4-4"
+                      />
+                    </svg>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

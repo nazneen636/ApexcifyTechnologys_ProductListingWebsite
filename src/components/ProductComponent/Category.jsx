@@ -4,7 +4,7 @@ import { RiFilterFill } from "react-icons/ri";
 const CategorySidebar = ({ AllCategory, isLoading, onCategorySelect }) => {
   if (isLoading) return <CategorySidebarSkeleton />;
   return (
-    <aside className="w-72 fixed bg-white px-4 border-r border-r-gray-200">
+    <aside className="w-64 fixed bg-white px-4 border-r border-r-gray-200">
       <div className="mt-4">
         <h1 className="font-poppins font-bold text-3xl text-red-400 mb-8">
           Red Mart
