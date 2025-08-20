@@ -1,8 +1,6 @@
-import React from "react";
 import { FaEye, FaHeart, FaRegHeart } from "react-icons/fa";
 import Star from "./Star";
 import { Link } from "react-router";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleWishList } from "../../Feature/slices/wishlistSlice";
 import { addToCart, removeFromCart } from "../../Feature/slices/cartSlice";
@@ -69,7 +67,11 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
             </div>
 
             <div
-              onClick={() => !isCart && dispatch(addToCart(itemData))}
+              onClick={() =>
+                isCart
+                  ? dispatch(removeFromCart(itemData.id))
+                  : dispatch(addToCart(itemData))
+              }
               className="opacity-0 absolute left-0 bottom-0 font-poppins font-medium text-lg cursor-pointer flex justify-center items-center w-full h-12 bg-black text-white group-hover:opacity-100 transition-all duration-200"
             >
               <h3>{isCart ? "Remove to cart" : "Add to Cart"}</h3>
@@ -148,7 +150,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
             <div className="flex items-center gap-3 mt-4">
               {isCart ? (
                 <button
-                  onClick={() => dispatch(removeFromCart(itemData))}
+                  onClick={() => dispatch(removeFromCart(itemData.id))}
                   className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 cursor-pointer"
                 >
                   Remove to cart

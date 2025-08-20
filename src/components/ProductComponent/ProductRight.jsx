@@ -1,5 +1,3 @@
-import React from "react";
-import { BsCart3 } from "react-icons/bs";
 import { FaBars, FaHeart, FaTh } from "react-icons/fa";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { useSelector } from "react-redux";

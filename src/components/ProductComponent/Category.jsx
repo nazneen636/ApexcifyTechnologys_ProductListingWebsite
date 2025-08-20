@@ -1,7 +1,5 @@
-import React from "react";
 import CategorySidebarSkeleton from "../Skeleton/CategorySkeleton";
 import { RiFilterFill } from "react-icons/ri";
-import logo from "../../assets/logo.png";
 
 const CategorySidebar = ({ AllCategory, isLoading, onCategorySelect }) => {
   if (isLoading) return <CategorySidebarSkeleton />;

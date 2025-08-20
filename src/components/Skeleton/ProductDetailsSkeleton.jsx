@@ -70,7 +70,7 @@ const ProductDetailsSkeleton = () => {
       <div className="my-5 py-3 rounded bg-gray-200 w-[120px]"></div>
       <div className="grid grid-cols-4 gap-4 mt-10">
         {[...new Array(4)].map((_, index) => (
-          <ProductSkeleton />
+          <ProductSkeleton key={index} />
         ))}
       </div>
     </div>

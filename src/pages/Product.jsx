@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import ProductCard from "../components/commonComponents/ProductCard";
 import CategorySidebar from "../components/ProductComponent/Category";
@@ -10,9 +8,7 @@ import {
   useGetSearchProductQuery,
 } from "../Feature/ProductApi";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
-import { FaBars, FaHeart, FaTh } from "react-icons/fa";
-import { BsCart3 } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ProductRight from "../components/ProductComponent/ProductRight";
 
 const Product = () => {

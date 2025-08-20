@@ -1,4 +1,3 @@
-import React from "react";
 import ImageGallery from "../components/productDetails/ImageGallery";
 import SpecificProductDetails from "../components/productDetails/SpecificProductDetails";
 import { useParams } from "react-router";
@@ -9,8 +8,6 @@ import {
 } from "../Feature/ProductApi";
 import RelatedProducts from "../components/productDetails/RelatedProduct";
 import BreadCrumb from "../components/commonComponents/BreadCrumb";
-import { TbRectangleVerticalFilled } from "react-icons/tb";
-import { BiSolidDirections } from "react-icons/bi";
 import { TfiDirectionAlt } from "react-icons/tfi";
 
 // import { useGetSingleProductQuery } from "../../Features/api/product.api";

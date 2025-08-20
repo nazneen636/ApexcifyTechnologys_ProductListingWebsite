@@ -1,5 +1,3 @@
-import React from "react";
-
 const CategorySidebarSkeleton = () => {
   return (
     <aside className="w-64 bg-white p-4 border-r border-r-gray-200 animate-pulse">

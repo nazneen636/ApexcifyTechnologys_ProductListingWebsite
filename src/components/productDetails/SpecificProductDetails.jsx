@@ -1,8 +1,6 @@
-import React from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { TbTruckDelivery } from "react-icons/tb";
 import Star from "../commonComponents/Star";
-import { FiRefreshCcw } from "react-icons/fi";
 import { HiOutlineRefresh } from "react-icons/hi";
 const SpecificProductDetails = ({ product }) => {
   const {
@@ -10,8 +8,6 @@ const SpecificProductDetails = ({ product }) => {
     description,
     rating,
     price,
-    stock,
-    warrantyInformation,
     returnPolicy,
     discountPercentage,
     availabilityStatus,
