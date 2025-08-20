@@ -5,10 +5,14 @@ import { Link } from "react-router";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleWishList } from "../../Feature/slices/wishlistSlice";
+import { addToCart } from "../../Feature/slices/cartSlice";
 
 const ProductCardList = ({ itemData, viewType = "grid" }) => {
   const dispatch = useDispatch();
   const wishList = useSelector((state) => state.wishList);
+  const cart = useSelector((state) => state.cart);
+  console.log(cart);
+
   const isWishListed = wishList.some((item) => item.id === itemData.id);
 
   if (!itemData) return null;
@@ -64,7 +68,10 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
               </div>
             </div>
 
-            <div className="opacity-0 absolute left-0 bottom-0 font-poppins font-medium text-lg cursor-pointer flex justify-center items-center w-full h-12 bg-black text-white group-hover:opacity-100 transition-all duration-200">
+            <div
+              onClick={() => dispatch(addToCart(itemData))}
+              className="opacity-0 absolute left-0 bottom-0 font-poppins font-medium text-lg cursor-pointer flex justify-center items-center w-full h-12 bg-black text-white group-hover:opacity-100 transition-all duration-200"
+            >
               <h3>Add To Cart</h3>
             </div>
           </div>

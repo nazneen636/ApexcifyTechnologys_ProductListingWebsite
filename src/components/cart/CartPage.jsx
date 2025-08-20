@@ -12,6 +12,7 @@ import { FaTrash } from "react-icons/fa";
 const CartPage = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  console.log(cart);
 
   const totalPrice = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -42,21 +43,21 @@ const CartPage = () => {
                   <div>
                     <h2 className="font-semibold">{item.title}</h2>
                     <p className="text-gray-600">${item.price}</p>
-                    <div className="flex items-center gap-3 mt-2">
-                      <button
-                        onClick={() => dispatch(decreaseQty(item.id))}
-                        className="px-2 py-1 border rounded hover:bg-gray-100"
-                      >
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        onClick={() => dispatch(increaseQty(item.id))}
-                        className="px-2 py-1 border rounded hover:bg-gray-100"
-                      >
-                        +
-                      </button>
-                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 mt-2">
+                    <button
+                      onClick={() => dispatch(decreaseQty(item.id))}
+                      className="px-2 py-1 border rounded hover:bg-gray-100"
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      onClick={() => dispatch(increaseQty(item.id))}
+                      className="px-2 py-1 border rounded hover:bg-gray-100"
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
