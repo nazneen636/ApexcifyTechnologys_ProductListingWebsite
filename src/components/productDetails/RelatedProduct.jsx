@@ -10,11 +10,14 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import ProductCardList from "../commonComponents/ProductCard";
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleLine } from "react-icons/ri";
+import { TbCirclesRelation } from "react-icons/tb";
 
 export default function RelatedProducts({ data = [] }) {
   return (
     <div className="mt-16 relative">
-      <h2 className="text-red-950 text-2xl font-bold mb-3 text-shadow-amber-200">
+      <h2 className="text-2xl font-bold mb-6 flex gap-2 items-center">
+        {" "}
+        <TbCirclesRelation className="text-red-400" />
         Related Products
       </h2>
       <Swiper

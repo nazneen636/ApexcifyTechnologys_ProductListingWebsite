@@ -14,7 +14,7 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
   console.log(cart);
 
   const isWishListed = wishList.some((item) => item.id === itemData.id);
-
+  const isCart = cart.some((item) => item.id === itemData.id);
   if (!itemData) return null;
 
   // Common price calculation
@@ -69,10 +69,10 @@ const ProductCardList = ({ itemData, viewType = "grid" }) => {
             </div>
 
             <div
-              onClick={() => dispatch(addToCart(itemData))}
+              onClick={() => !isCart && dispatch(addToCart(itemData))}
               className="opacity-0 absolute left-0 bottom-0 font-poppins font-medium text-lg cursor-pointer flex justify-center items-center w-full h-12 bg-black text-white group-hover:opacity-100 transition-all duration-200"
             >
-              <h3>Add To Cart</h3>
+              <h3>{isCart ? "Remove to cart" : "Add to Cart"}</h3>
             </div>
           </div>
 

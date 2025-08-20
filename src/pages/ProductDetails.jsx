@@ -9,6 +9,9 @@ import {
 } from "../Feature/ProductApi";
 import RelatedProducts from "../components/productDetails/RelatedProduct";
 import BreadCrumb from "../components/commonComponents/BreadCrumb";
+import { TbRectangleVerticalFilled } from "react-icons/tb";
+import { BiSolidDirections } from "react-icons/bi";
+import { TfiDirectionAlt } from "react-icons/tfi";
 
 // import { useGetSingleProductQuery } from "../../Features/api/product.api";
 const ProductDetails = () => {
@@ -23,7 +26,11 @@ const ProductDetails = () => {
   return (
     <div className="container mt-5 mx-auto mb-20!">
       <BreadCrumb />
-      <h2 className="text-2xl text-red-950 font-bold mb-5">Product Details</h2>
+      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+        {" "}
+        <TfiDirectionAlt className="text-red-400" />
+        Product Details
+      </h2>
       {!isLoading ? (
         <div>
           {" "}

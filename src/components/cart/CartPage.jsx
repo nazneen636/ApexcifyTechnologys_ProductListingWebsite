@@ -7,7 +7,7 @@ import {
   removeFromCart,
   clearCart,
 } from "../../Feature/slices/cartSlice";
-import { FaTrash } from "react-icons/fa";
+import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 
 const CartPage = () => {
   const cart = useSelector((state) => state.cart);
@@ -32,45 +32,47 @@ const CartPage = () => {
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-4 border rounded-lg mb-4"
+                className="grid grid-cols-6 items-center p-4 border border-gray-200 shadow rounded-lg mb-4"
               >
-                <div className="flex items-center gap-4">
+                {/* img */}
+                <div className="w-20 h-20  bg-gray-200 rounded overflow-hidden">
                   <img
                     src={item.thumbnail || item.image}
                     alt={item.title}
-                    className="w-20 h-20 object-cover rounded"
+                    className="w-full h-full object-cover rounded"
                   />
-                  <div>
-                    <h2 className="font-semibold">{item.title}</h2>
-                    <p className="text-gray-600">${item.price}</p>
-                  </div>
-                  <div className="flex items-center gap-3 mt-2">
-                    <button
-                      onClick={() => dispatch(decreaseQty(item.id))}
-                      className="px-2 py-1 border rounded hover:bg-gray-100"
-                    >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button
-                      onClick={() => dispatch(increaseQty(item.id))}
-                      className="px-2 py-1 border rounded hover:bg-gray-100"
-                    >
-                      +
-                    </button>
-                  </div>
+                </div>
+                {/* title and price */}
+                <div className="-ml-10">
+                  <h2 className="font-semibold text-xl">{item.title}</h2>
+                  <p className="text-gray-600 text-base">${item.price}</p>
+                </div>
+                <div className="flex items-center gap-3 mt-2  col-span-2">
+                  <button
+                    onClick={() => dispatch(decreaseQty(item.id))}
+                    className="w-8 h-8 cursor-pointer flex items-center justify-center  border rounded hover:bg-gray-100 text-sm text-gray-800"
+                  >
+                    <FaMinus />
+                  </button>
+                  <span className="text-lg">{item.quantity}</span>
+                  <button
+                    onClick={() => dispatch(increaseQty(item.id))}
+                    className="w-8 h-8 cursor-pointer flex items-center justify-center border rounded hover:bg-gray-100 text-sm text-gray-800"
+                  >
+                    <FaPlus />
+                  </button>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="font-bold">
                     ${(item.price * item.quantity).toFixed(2)}
                   </span>
-                  <button
-                    onClick={() => dispatch(removeFromCart(item.id))}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrash />
-                  </button>
                 </div>
+                <button
+                  onClick={() => dispatch(removeFromCart(item.id))}
+                  className="text-red-500 hover:text-red-700 cursor-pointer text-xl"
+                >
+                  <FaTrash />
+                </button>
               </div>
             ))}
           </div>

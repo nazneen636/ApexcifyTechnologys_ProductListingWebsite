@@ -1,6 +1,9 @@
 import React from "react";
 import { BsCart3 } from "react-icons/bs";
 import { FaBars, FaHeart, FaTh } from "react-icons/fa";
+import { HiMiniShoppingCart } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { Link } from "react-router";
 
 const ProductRight = ({
   totalProduct,
@@ -16,12 +19,16 @@ const ProductRight = ({
   handleList,
   handlePageShow,
 }) => {
+  const cart = useSelector((state) => state.cart);
+  const totalCartItems = cart.length;
+  console.log(totalCartItems);
+
   return (
     <div>
       <div className="sticky z-50 py-4 bg-white w-full flex flex-col gap-4">
         <div className="flex items-center justify-between gap-12">
           {/* Left: Title */}
-          <h1 className="text-lg font-bold font-poppins text-red-950">
+          <h1 className="text-2xl font-bold mb-6">
             Product List <span className="text-gray-500">({totalProduct})</span>
           </h1>
           {/*Search */}
@@ -106,10 +113,18 @@ const ProductRight = ({
               {" "}
               <FaHeart className="text-red-500" />
             </div>
-            <div className="text-2xl cursor-pointer p-1 border border-gray-300 rounded hover:bg-black hover:text-white transition-all">
+            <Link
+              to="/product/addtocart"
+              className="relative text-2xl cursor-pointer  hover:text-gray-700 transition-all"
+            >
               {" "}
-              <BsCart3 />
-            </div>
+              <HiMiniShoppingCart />
+              {totalCartItems > 0 && (
+                <span className="absolute top-[40%] -right-2 w-6 h-6 rounded-full flex items-center justify-center bg-red-500 text-white text-sm font-semibold">
+                  {totalCartItems}
+                </span>
+              )}
+            </Link>
 
             {/* View toggle */}
             <div className="flex items-center gap-5 text-gray-500">
