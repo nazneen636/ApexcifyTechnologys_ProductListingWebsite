@@ -16,15 +16,22 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductRight from "../components/ProductComponent/ProductRight";
 
 const Product = () => {
-  const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishList);
 
+  // state
   const [showWishList, setShowWishList] = useState(false);
   const [sortBy, setSortBy] = useState("title");
   const [order, setOrder] = useState("asc");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewType, setViewType] = useState("grid");
+  const [viewType, setViewType] = useState(() => {
+    return localStorage.getItem("viewType") || "grid";
+  });
+
+  // Save view type to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("viewType", viewType);
+  }, [viewType]);
 
   const searchQuery = useGetSearchProductQuery(searchTerm);
   const categoryQuery = useGetProductsByCategoryQuery(selectedCategory, {
@@ -36,7 +43,6 @@ const Product = () => {
       skip: searchTerm || selectedCategory,
     }
   );
-  console.log(allQuery?.data?.products);
 
   let data = allQuery.data;
   let isLoading = allQuery.isLoading;
@@ -61,7 +67,7 @@ const Product = () => {
   const { data: allCategory, isLoading: isCategoryLoading } =
     useGetProductByCategoryQuery();
 
-  // pagination state
+  // pagination state and function
   const [page, setPage] = useState(1);
   const [perPageShow, setPerPageShow] = useState(8);
   const totalPage = Math.ceil((data?.products?.length || 0) / perPageShow);
@@ -83,6 +89,7 @@ const Product = () => {
     }
   }, [data, totalPage, showWishList, selectedCategory, searchTerm]);
 
+  // handle category function
   const handleCategorySelect = (cat) => {
     setSelectedCategory(cat);
     setShowWishList(false); // Exit wishlist mode when selecting a category
@@ -93,6 +100,7 @@ const Product = () => {
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-5 relative">
+        {/* category part in left */}
         <div className="">
           <CategorySidebar
             AllCategory={allCategory}
